@@ -1,17 +1,17 @@
 # Базовий образ
 FROM ubuntu:latest
 
-# Додати MailCow репозиторій
+# Оновлення пакетів та встановлення необхідних інструментів
+RUN apt update && apt install -y git curl
+
+# Клонування MailCow
 RUN git clone https://github.com/mailcow/mailcow-dockerized.git /mailcow-dockerized
 
-# Змінити робочу директорію
+# Зміна робочої директорії
 WORKDIR /mailcow-dockerized
 
-# Встановлення curl перед генерацією конфігурації
-RUN apt update && apt install -y curl
-
-# Генерація конфігурації
+# Генерація конфігурації MailCow
 RUN ./generate_config.sh
 
-# Запуск MailCow через docker-compose
+# Запуск MailCow за допомогою docker-compose
 CMD ["docker-compose", "up", "-d"]
